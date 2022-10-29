@@ -1,7 +1,7 @@
 
 const $result = document.querySelector(".box span:nth-child(2)");
 
-function calculatorOperations(text = "") {
+function calculatorOperations(text = "", negativeNumber = false) {
 
     let operation = 0;
     let numbersValidator = /([0-9]+[\.]?[0-9]*)/ig;
@@ -13,20 +13,16 @@ function calculatorOperations(text = "") {
     let counter;
 
 
-
     while ((arrayAux1 = numbersValidator.exec(text)) !== null) {
-        arrayNumbers.push(parseInt(arrayAux1[0]))
+        arrayNumbers.push(parseFloat(arrayAux1[0]))
     }
 
     while ((arrayAux2 = operatorValidator.exec(text)) !== null) {
         arrayOperator.push(arrayAux2[0])
     }
 
-    // console.clear();
-    // console.log(arrayNumbers);
-    // console.log(arrayOperator);
-    operation = arrayNumbers[0];
-    counter = 0;
+    operation = negativeNumber ? -arrayNumbers[0] : arrayNumbers[0];
+    counter = negativeNumber ? 1 : 0;
 
     for (let index = 1; index < arrayNumbers.length; index++) {
 
@@ -52,7 +48,11 @@ function calculatorOperations(text = "") {
         counter++;
     }
 
-    $result.textContent = operation;
+    if (typeof arrayNumbers[0] !== "undefined") {
+        $result.textContent = operation;
+    } else {
+        $result.textContent = 0;
+    }
 }
 
 
@@ -66,6 +66,8 @@ document.addEventListener("keyup", (e) => {
     let array1;
     let filteredText = "";
     let keyCharacter = e.key;
+    let negativeNumber = false;
+
 
     console.log("key", keyCharacter);
 
@@ -78,16 +80,17 @@ document.addEventListener("keyup", (e) => {
         text = text.substring(0, text.length - 1) + keyCharacter;
     }
 
-
     text += keyCharacter;
+
+    if (text[0] === "-") negativeNumber = true;
 
     while ((array1 = validatorText.exec(text)) !== null) {
         filteredText += array1[0];
     }
 
-    text = filteredText;
     console.log(text);
-    calculatorOperations(text);
+    text = negativeNumber ? "-" + filteredText : filteredText;
+    calculatorOperations(text, negativeNumber);
     $boxSpan.textContent = text;
 
 })
