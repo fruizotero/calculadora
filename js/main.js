@@ -119,6 +119,33 @@ function filterString(character) {
     $screenPrimary.textContent = text.replace('*', 'x');
 }
 
+
+function defaultTheme() {
+    let dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return dark;
+}
+
+function saveThemeLocalStorage(value) {
+    localStorage.setItem("theme", value);
+}
+
+function moveSelector(value) {
+    switch (value) {
+        case 1:
+            $selector.style.setProperty('Left', "8%");
+            break;
+        case 2:
+            $selector.style.setProperty('Left', "40%");
+            break;
+        case 3:
+            $selector.style.setProperty('Left', "70%");
+            break;
+
+        default:
+            break;
+    }
+}
+
 document.addEventListener("keyup", (e) => {
 
     let character = e.key;
@@ -126,34 +153,50 @@ document.addEventListener("keyup", (e) => {
 
 });
 
-
-
 document.addEventListener('click', (e) => {
 
     $buttonClass = buttons.includes(e.target.classList[1]);
 
 
     if (e.target.matches('.option-1')) {
-        $selector.style.setProperty('Left', '8%');
+        moveSelector(1);
         option = 1;
-        theme.initializeColors(option)
+        theme.initializeColors(option);
+        saveThemeLocalStorage(option);
     }
     if (e.target.matches('.option-2')) {
-        $selector.style.setProperty('Left', '40%');
+        moveSelector(2);
         option = 2;
         theme.initializeColors(option)
+        saveThemeLocalStorage(option);
     }
     if (e.target.matches('.option-3')) {
-        $selector.style.setProperty('Left', '70%');
+        moveSelector(3);
         option = 3;
         theme.initializeColors(option)
+        saveThemeLocalStorage(option);
     }
     if ($buttonClass) {
-        let selector = e.target.classList[1];
-        // console.log(selector);
-        // let $text = document.querySelector(`.${selector}--character`).textContent.trim();
         let character = e.target.textContent.trim();
         filterString(character);
+    }
+
+})
+
+document.addEventListener("DOMContentLoaded", (e) => {
+
+    let themeOption = localStorage.getItem("theme");
+    console.log(themeOption);
+    if (themeOption !== null) {
+        theme.initializeColors(parseInt(themeOption));
+        moveSelector(parseInt(themeOption));
+    } else {
+        if (defaultTheme()) {
+            theme.initializeColors(1);
+        } {
+            theme.initializeColors(2);
+            moveSelector(2);
+        }
     }
 
 })
