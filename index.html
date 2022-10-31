@@ -1,43 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
   <title>Frontend Mentor | Calculator app</title>
-<style>
-  .box{
-    width: 400px;
-    height: 100px;
-    background-color: aqua;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
 
-  .box span{
-    height: 30%;
-    width: 80%;
-    margin: 0 auto;
-    background-color: black;
-    color: white;
-  }
-</style>
-  
+
 </head>
+
 <body>
+  <main>
+    <section class="calculator">
+      <div class="calculator__top">
+        <span class="calculator__title">calc</span>
+        <div class="theme">       
+          <div class="theme__types">
+            <div class="theme__numbers">
+              <span class="theme__number">1</span>
+              <span class="theme__number">2</span>
+              <span class="theme__number">3</span>
+            </div>
+            <div class="theme__options">
+              <span class="theme__text">
+                theme
+              </span>
+              <div class="theme__option theme__option--border-left option-1"></div>
+              <div class="theme__option option-2"></div>
+              <div class="theme__option theme__option--border-right option-3"></div>
+              <div class="theme__option theme__option--selector"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="calculator__medium">
+        <div class="screen">
+          <span class="screen__secondary-text"></span>
+          <span class="screen__primary-text"></span>
+        </div>
+      </div>
+      <div class="calculator__bottom">
+        <div class="keys">
+          <div class="keys__key key__1">7</div>
+          <div class="keys__key key__2">8</div>
+          <div class="keys__key key__3">9</div>
+          <div class="keys__key key__4 keys__key--text keys__key--bgblue">del</div>
+          <div class="keys__key key__5">4</div>
+          <div class="keys__key key__6">5</div>
+          <div class="keys__key key__7">6</div>
+          <div class="keys__key key__8">+</div>
+          <div class="keys__key key__9">1</div>
+          <div class="keys__key key__10">2</div>
+          <div class="keys__key key__11">3</div>
+          <div class="keys__key key__12">-</div>
+          <div class="keys__key key__13">.</div>
+          <div class="keys__key key__14">0</div>
+          <div class="keys__key key__15">/</div>
+          <div class="keys__key key__16">x</div>
+          <div class="keys__key key__17 keys__key--text keys__key--bgblue">reset</div>
+          <div class="keys__key key__18 keys__key--bgred keys__key--single-color">=</div>
+          
+        </div>
+      </div>
+    </section>
 
-  <div class="box" >
-    <span></span>
-    <span></span>
-  </div>
+  </main>
 
-  
- <script src="js/main.js" type="module" ></script>
+
+  <script src="js/main.js" type="module"></script>
 </body>
+
 </html>
