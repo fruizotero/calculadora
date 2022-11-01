@@ -244,7 +244,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener("DOMContentLoaded", (e) => {
 
     let themeOption = localStorage.getItem("theme");
-    console.log(themeOption);
+    
     if (themeOption !== null) {
         theme.initializeColors(parseInt(themeOption));
         moveSelector(parseInt(themeOption));
