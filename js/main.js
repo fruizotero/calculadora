@@ -16,17 +16,16 @@ const buttons = [
     'key__17', 'key__18']
 
 
-function calculatorOperations(text = "", negativeNumber = false) {
+function calculatorOperations(text = "") {
 
     let operation = 0;
-    let numbersValidator = /([0-9]+[\.]?[0-9]*)/ig;
-    let operatorValidator = /[+*/-]/ig;
+    let numbersValidator = /([-]?[0-9]+[\.]?[0-9]*)/ig;
+    let operatorValidator = /[asmd]/ig;
     let arrayNumbers = [];
     let arrayOperator = [];
     let arrayAux1;
     let arrayAux2;
     let counter;
-
 
     while ((arrayAux1 = numbersValidator.exec(text)) !== null) {
         arrayNumbers.push(parseFloat(arrayAux1[0]))
@@ -36,25 +35,23 @@ function calculatorOperations(text = "", negativeNumber = false) {
         arrayOperator.push(arrayAux2[0])
     }
 
-    operation = negativeNumber ? -arrayNumbers[0] : arrayNumbers[0];
-    counter = negativeNumber ? 1 : 0;
-
+    operation = arrayNumbers[0];
+    counter = 0;
     for (let index = 1; index < arrayNumbers.length; index++) {
 
         switch (arrayOperator[counter]) {
-            case "+":
+            case "a":
                 operation += arrayNumbers[index];
                 break;
-            case "-":
+            case "s":
                 operation -= arrayNumbers[index];
                 break;
-            case "*":
+            case "m":
                 operation *= arrayNumbers[index];
                 break;
-            case "/":
+            case "d":
                 operation /= arrayNumbers[index];
                 break;
-
             default:
                 console.error("error");
                 break;
@@ -64,22 +61,85 @@ function calculatorOperations(text = "", negativeNumber = false) {
     }
 
     if (typeof arrayNumbers[0] !== "undefined") {
-        $screenSecondary.textContent = operation;
+        $screenPrimary.textContent = operation;
     } else {
-        $screenSecondary.textContent = 0;
+        $screenPrimary.textContent = text;
     }
 }
 
+function swapValues(value) {
 
-function filterString(character) {
+    let character = value;
+
+    switch (character) {
+        case "+":
+            character = "a";
+            break;
+        case "-":
+            //First verification
+            if (!((text[text.length - 1] === "d" |
+                text[text.length - 1] === "m") &&
+                character === "-")) {
+                //Second verification
+                if (!(text.length === 0)) {
+                    character = "s";
+                }
+            }
+            break;
+        case "*":
+            character = "m";
+            break;
+        case "/":
+            character = "d";
+            break;
+        case "x":
+            character = "m";
+            break;
+        case "del":
+            character = "Backspace"
+            break;
+        default:
+            console.log("Other");
+            break;
+    }
+
+    return character;
+}
+
+function replaceValues(text = "") {
+    let textFinal = text;
+    ["a", "s", "m", "d"].forEach(el => {
+        switch (el) {
+            case "a":
+                textFinal = textFinal.replaceAll("a", "+");
+                break;
+            case "s":
+                textFinal = textFinal.replaceAll("s", "-");
+                break;
+            case "m":
+                textFinal = textFinal.replaceAll("m", "x");
+                break;
+            case "d":
+                textFinal = textFinal.replaceAll("d", "/");
+                break;
+            default:
+                console.error(error);
+                break;
+        }
+    });
+    return textFinal;
+}
+
+function filterString(value) {
     let array1;
     let filteredText = "";
-    let negativeNumber = false;
-    let validatorText = /([0-9]+[\.]?[0-9]*)[+*/-]?/ig;
+    let firstNumberNegative = false;
+    let validatorText = /([0-9]+[\.]?[0-9]*)[asmd]?((?<=d|m)-)?/ig;
+
+    let character = swapValues(value);
 
     $screenPrimary.style.setProperty('font-size', '2.5rem');
 
-    console.log("key", character);
     if (character === "reset") {
         $screenPrimary.textContent = "0";
         $screenSecondary.textContent = "";
@@ -87,36 +147,34 @@ function filterString(character) {
     }
     if (character === "Enter" | character === "=") {
         $screenPrimary.style.setProperty('font-size', '2.8rem');
-        $screenPrimary.textContent = $screenSecondary.textContent;
-        text = $screenSecondary.textContent;
+        text = $screenPrimary.textContent;
         $screenSecondary.textContent = "";
         return;
-    }
-    if (character === "del") {
-        character = "Backspace"
-    }
-    if (character === "x") {
-        character = "*";
     }
     if (character === "Backspace" && text.length >= 1) {
         text = text.substring(0, text.length - 1);
     }
-    if ((/[+*/-]/ig.test(text[text.length - 1]) &&
-        /[+*/-]/ig.test(character))) {
-        text = text.substring(0, text.length - 1) + character;
+    if ((/[asmd]/ig.test(text[text.length - 1]) &&
+        /[asmd]/ig.test(character))) {
+
+        if (!((text[text.length - 1] === "d" |
+            text[text.length - 1] === "m") &&
+            character === "-")) {
+            text = text.substring(0, text.length - 1) + character;
+        }
     }
 
     text += character;
 
-    if (text[0] === "-") negativeNumber = true;
+    if (text[0] === "-") firstNumberNegative = true;
 
     while ((array1 = validatorText.exec(text)) !== null) {
         filteredText += array1[0];
     }
 
-    text = negativeNumber ? "-" + filteredText : filteredText;
-    calculatorOperations(text, negativeNumber);
-    $screenPrimary.textContent = text.replace('*', 'x');
+    text = firstNumberNegative ? "-" + filteredText : filteredText;
+    calculatorOperations(text);
+    $screenSecondary.textContent = replaceValues(text);
 }
 
 
